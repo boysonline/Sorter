@@ -38,7 +38,7 @@ public:
 class World {
 private:
     static constexpr int CONTAINER_Y = 17;
-    static constexpr int FRAMES_BETWEEN_SPAWNS = 10;
+    static constexpr int FRAMES_BETWEEN_SPAWNS = 20;
 
     int framesSinceLastSpawn = 0;
     Conveyor conveyor;

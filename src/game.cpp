@@ -33,11 +33,16 @@ void Game::runStart() {
 }
 
 void Game::runGameLoop() {
+    World world;
     Renderer renderer;
     Clock clock(10);
 
     while (currentScene == Scene::PLAY) {
-        if(world.isGameOver()) { currentScene = Scene::END; break; }
+        if(world.isGameOver()) { 
+            finalScore = world.getPlayerScore();
+            currentScene = Scene::END; 
+            break; 
+        }
         world.update();
         renderer.drawWorld(world);
         renderer.render();
@@ -47,7 +52,7 @@ void Game::runGameLoop() {
 
 void Game::runEnd() {
     Renderer renderer;
-    renderer.drawEnd(world.getPlayerScore());
+    renderer.drawEnd(finalScore);
     renderer.render();
 
     Player player;

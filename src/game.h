@@ -15,7 +15,7 @@ class Game {
 private:
     bool running;
     Scene currentScene;
-    World world;
+    Score finalScore;
     
 public:
     Game();

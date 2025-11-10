@@ -16,7 +16,7 @@ int GameObject::getY() const { return y; }
 void GameObject::setY(int y) { this->y = y; }
 
 std::string GameObject::getSprite() const { return sprite; }
-void GameObject::setSprite(std::string s) { sprite = std::move(s); }
+void GameObject::setSprite(std::string sprite) { this->sprite = sprite; }
 
 bool GameObject::collidesWith(const GameObject& other) const {
     int leftA = hitboxX;
