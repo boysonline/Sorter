@@ -1,6 +1,5 @@
 
 #include "player.h"
-// PLAYER
 
 KeyPress Player::getInput() const {
     static SHORT previousState[256] = {0};

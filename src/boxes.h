@@ -28,7 +28,6 @@ public:
     bool isOn(const Conveyor& conveyor) const;
 };
 
-// all subclasses now share the same sprite logic
 class ScoreBox : public Box {
 public:
     ScoreBox(int x, int y);

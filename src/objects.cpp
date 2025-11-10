@@ -29,7 +29,7 @@ bool GameObject::collidesWith(const GameObject& other) const {
 int GameObject::getSpriteLength() const { return sprite.size(); }
 int GameObject::getHitboxLength() const { return sprite.size(); }
 
-// SCORE
+
 
 Score::Score() : GameObject(makeSprite(STARTING_SCORE), X, Y) {
     score = STARTING_SCORE;
@@ -49,7 +49,7 @@ std::string Score::makeSprite(char score) const {
     return "Score: " + std::to_string(score);
 }
 
-// LIVES
+
 
 std::string Lives::makeSprite(char lives) const {
     std::string s;
@@ -69,7 +69,8 @@ void Lives::restore() {
     if (lives < STARTING_LIVES) lives++;
     sprite = makeSprite(lives);
 }
-// VALVE
+
+
 
 constexpr const char* Valve::getOpenSprite() { return OPEN_SPRITE; }
 constexpr const char* Valve::getClosedSprite() { return CLOSED_SPRITE; }
@@ -93,7 +94,7 @@ void Valve::close() {
 
 int Valve::getHitboxLength() const { return HITBOX_LENGTH; }
 
-// TypedGameObject 
+
 
 TypedGameObject::TypedGameObject(char type, std::string sprite, int x, int y)
     : GameObject(std::move(sprite), x, y), type(type) {}
@@ -104,9 +105,8 @@ bool TypedGameObject::matches(const TypedGameObject& other) const {
     return type == other.getType();
 }
 
-// ───────────────────────────────────────────────
-// Container
-// ───────────────────────────────────────────────
+
+
 Container::Container(char type, int x, int y)
     : TypedGameObject(type, makeSprite(type), x, y) {}
 
@@ -114,9 +114,8 @@ std::string Container::makeSprite(char type) const {
     return std::string("##") + char(type) + "##";
 }
 
-// ───────────────────────────────────────────────
-// Conveyor
-// ───────────────────────────────────────────────
+
+
 Conveyor::Conveyor()
     : GameObject(SPRITE, X, Y), speed(STARTING_SPEED) {
     valves = { Valve(VALVE1_SPRITE_X, VALVE1_HITBOX_X, VALVE1_Y),
