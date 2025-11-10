@@ -22,7 +22,8 @@ private:
     time_point lastFrame;
 
 public:
-    Clock(int FPS) : frameTime(1000 / FPS), lastFrame(clock::now()) {}
+    static constexpr int MILLISECONDS_IN_SECOND = 1000;
+    Clock(int FPS) : frameTime(MILLISECONDS_IN_SECOND / FPS), lastFrame(clock::now()) {}
 
     void limitFrameRate() {
         auto now = clock::now();
