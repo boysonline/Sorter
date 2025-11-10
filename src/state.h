@@ -1,40 +1,81 @@
 #include <iostream>
 #include <memory>
-using namespace std;
+#include <renderer.h>
 
 class GameState {
+private:
+    Renderer renderer;
 public:
     virtual ~GameState() = default;
-    virtual void handleRequest() = 0;
-    virtual string name() const = 0;
+    virtual void advance(Game& game) const = 0;
+    virtual void draw() = 0;
+    void render() { renderer.render(); }
+    virtual void checkForInput() = 0;
 };
 
 class StartState : public GameState {
 public:
-    void handleRequest() override {}
+    void advance(Game& game) const override {
+        game.setState(std::make_unique<PlayState>());
+    }
+    void draw() {
+
+    }
+    void checkForInput() {
+
+    }
+    
 };
 
 class PlayState : public GameState {
+private:
+    World world;
 public:
-    void handleRequest() override {}
+    void advance(Game& game) const override {
+        game.setState(std::make_unique<EndState>());
+    }
+    virtual void update() {};
+    void draw() {
+
+    }
+    void checkForInput() {
+        
+    }
 };
 
 class EndState : public GameState {
 public:
-    void handleRequest() override {}
+    void advance(Game& game) const override {
+        game.setState(std::make_unique<EndState>());
+    }
+    void draw() {
+
+    }
+    void checkForInput() {
+        
+    }
 };
 
 class Game {
 private:
-    unique_ptr<GameState> state;
+    std::unique_ptr<GameState> state;
 
 public:
-    Game() : state(make_unique<StartState>()) {}
+    Game() : state(std::make_unique<StartState>()) {}
 
-    void setState(unique_ptr<GameState> newState) {
-        state = move(newState);
+    void setState(std::unique_ptr<GameState> state) {
+        this->state = std::move(state);
     }
 
-    void request() { state->handleRequest(); }
+    void advanceState() { state->advance(*this); }
+
+    void checkForPlayerInput() {
+        
+    }
+
+    void drawAndRender() {
+        state->draw();
+        state->render();
+    }
 };
 

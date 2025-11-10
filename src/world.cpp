@@ -23,7 +23,7 @@ World::World() {
         Container('H', conveyor.getValves()[0].getHitboxX() - 1, CONTAINER_Y),
         Container('+', conveyor.getValves()[1].getHitboxX() - 1, CONTAINER_Y),
         Container('-', conveyor.getValves()[2].getHitboxX() - 1, CONTAINER_Y),
-        Container('X', conveyor.getSpriteLength() + 1, CONTAINER_Y)
+        Container('X', conveyor.getSpriteLength(), CONTAINER_Y)
     };
 }
 
@@ -77,7 +77,7 @@ bool World::dropThroughValve(Box& box) {
     for (Valve& valve : conveyor.getValves()) {
         if (box.isOn(valve) && valve.isOpen()) {
             dropBox(box);
-            return true; // handled
+            return true;
         }
     }
     return false;

@@ -27,7 +27,6 @@ public:
     void clearFrame();
     void drawWindow();
     void drawObject(const GameObject& object);
-    void drawValve(const Valve& valve);
 
     void drawStart();
     void drawWorld(const World& world);

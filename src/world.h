@@ -59,7 +59,6 @@ private:
     bool dropThroughValve(Box& box);
 
 public:
-    
     bool isGameOver() const;
     World();
     void update();

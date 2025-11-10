@@ -30,7 +30,7 @@ bool Box::isOn(const Conveyor& conveyor) const {
     return onTop && (boxLeft <= conveyorRight);
 }
 
-// Subclasses
+
 ScoreBox::ScoreBox(int x, int y) : Box('+', x, y) {}
 
 void ScoreBox::onCollision(Player& player, bool matched) {
