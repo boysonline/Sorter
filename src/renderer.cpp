@@ -50,8 +50,8 @@ void Renderer::drawObject(const GameObject& object) {
 
 void Renderer::drawStart() {
     static constexpr const char* MESSAGE_TEXT = "Press any key to play...";
-    static constexpr int MESSAGE_X = 10;
-    static constexpr int MESSAGE_Y = 3;
+    static constexpr int MESSAGE_X = 4;
+    static constexpr int MESSAGE_Y = 2;
     
     clearFrame();
     drawObject(GameObject(MESSAGE_TEXT, MESSAGE_X, MESSAGE_Y));
@@ -72,13 +72,9 @@ void Renderer::drawEnd(const Score& score) {
 void Renderer::drawWorld(const World& world) {
     clearFrame();
     drawObject(world.getConveyor());
-    for (const Valve& valve : world.getConveyorValves())
-        drawObject(valve);
-    for (const auto& box : world.getBoxes())
-        drawObject(*box);
-    for (const Container& container : world.getContainers())
-        drawObject(container);
-
+    for (const Valve& valve : world.getConveyorValves()) drawObject(valve);
+    for (const auto& box : world.getBoxes()) drawObject(*box);
+    for (const Container& container : world.getContainers()) drawObject(container);
     drawObject(world.getPlayerLives());
     drawObject(world.getPlayerScore());
     
