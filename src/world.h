@@ -54,7 +54,6 @@ private:
     void moveBoxes();
     void checkPlayerInput();
     void spawnBox();
-    Player getPlayer() const;
     bool moveWithConveyor(Box& box);
     bool dropThroughValve(Box& box);
 
@@ -69,4 +68,6 @@ public:
     Score getPlayerScore() const;
     Conveyor getConveyor() const;
     std::vector<Valve> getConveyorValves() const;
+    Player& getPlayer();
+    const Player& getPlayer() const;
 };

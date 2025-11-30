@@ -2,7 +2,9 @@
 
 // WORLD
 
-Player World::getPlayer() const { return player; }
+Player& World::getPlayer() { return player; }
+
+const Player& World::getPlayer() const { return player; }
 
 KeyPress World::getPlayerInput() const { return getPlayer().getInput(); }
 

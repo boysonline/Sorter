@@ -3,7 +3,7 @@
     "tasks": [
         {
             "type": "cppbuild",
-            "label": "Build Sorter (all .cpp)",
+            "label": "Build Sorter.exe",
             "command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
             "args": [
                 "-std=c++20",
@@ -19,9 +19,33 @@
             "problemMatcher": ["$gcc"],
             "group": {
                 "kind": "build",
-                "isDefault": true
             },
-            "detail": "Builds all source files for Sorter."
-        }
+        },
+        {
+            "label": "Build UnitTests.exe",
+            "type": "cppbuild",
+            "command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+            "args": [
+                "-std=c++20",
+                "-fdiagnostics-color=always",
+                "-g",
+                "${workspaceFolder}/test/*.cpp",
+                "${workspaceFolder}/src/box_factories.cpp",
+                "${workspaceFolder}/src/boxes.cpp",
+                "${workspaceFolder}/src/objects.cpp",
+                "${workspaceFolder}/src/player.cpp",
+                "${workspaceFolder}/src/renderer.cpp",
+                "${workspaceFolder}/src/world.cpp",
+                "-I${workspaceFolder}/test",
+                "-I${workspaceFolder}/src",
+                "-o",
+                "${workspaceFolder}/build/UnitTests.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$gcc"],
+            "group": "build"
+        },
     ]
 }
