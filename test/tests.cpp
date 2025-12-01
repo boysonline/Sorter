@@ -3,119 +3,114 @@
 
 #include "../src/state.h"
 
-TEST_CASE("ScoreBox adds score when matched") {
-    Player p;
-    ScoreBox b(5, 5);
-
-    b.onCollision(p, true);
-
-    REQUIRE(p.getScore().get() == 1);
-    REQUIRE(b.toDelete());
-}
-
-TEST_CASE("NegativeScoreBox removes score when matched") {
-    Player p;
-    p.gainScore();
-
-    NegativeScoreBox b(5, 5);
-    b.onCollision(p, true);
-
-    REQUIRE(p.getScore().get() == 0);
-    REQUIRE(b.toDelete());
-}
-
-TEST_CASE("LifeBox restores life when matched") {
-    Player p;
-    REQUIRE(p.getLives().get() == 4);
-
-    p.loseLife();      // now at 3
-    REQUIRE(p.getLives().get() == 3);
-
-    LifeBox b(5, 5);
-    b.onCollision(p, true);
-
-    REQUIRE(p.getLives().get() == 4);
-}
-
-TEST_CASE("Box movement and deletion flags work") {
-    ScoreBox b(5, 5);
-
-    REQUIRE(!b.isFalling());
-    b.fall();
-    REQUIRE(b.isFalling());
-
-    int oldX = b.getHitboxX();
-    b.move(5);
-    REQUIRE(b.getHitboxX() == oldX + 5);
-
-    b.setToDelete();
-    REQUIRE(b.toDelete());
-}
-
 TEST_CASE("Player score system works") {
-    Player p;
+    Player player;
 
-    REQUIRE(p.getScore().get() == 0);
-    p.gainScore();
-    REQUIRE(p.getScore().get() == 1);
-    p.loseScore();
-    REQUIRE(p.getScore().get() == 0);
+    REQUIRE(player.getScore().get() == player.getStartingScore());
+    player.gainScore();
+    REQUIRE(player.getScore().get() == player.getStartingScore() + 1);
+    player.loseScore();
+    REQUIRE(player.getScore().get() == player.getStartingScore());
 }
 
 TEST_CASE("Player lives system works") {
-    Player p;
+    Player player;
 
-    REQUIRE(p.getLives().get() == 4);
-    p.loseLife();
-    REQUIRE(p.getLives().get() == 3);
-    p.restoreLife();
-    REQUIRE(p.getLives().get() == 4);
+    REQUIRE(player.getLives().get() == player.getStartingLives());
+    player.loseLife();
+    REQUIRE(player.getLives().get() == player.getStartingLives() - 1);
+    player.restoreLife();
+    REQUIRE(player.getLives().get() == player.getStartingLives());
 }
 
 TEST_CASE("Player death detection works") {
-    Player p;
+    Player player;
 
-    REQUIRE(!p.isDead());
-    p.loseLife(); // 3
-    p.loseLife(); // 2
-    p.loseLife(); // 1
-    p.loseLife(); // 0
-    REQUIRE(p.isDead());
+    REQUIRE(!player.isDead());
+    while (player.getLives().get() > 0) { player.loseLife(); }
+    REQUIRE(player.isDead());
+}
+
+TEST_CASE("ScoreBox adds score on-hit") {
+    Player player;
+    ScoreBox box(5, 5);
+
+    box.onCollision(player, true);
+
+    REQUIRE(player.getScore().get() == 1);
+    REQUIRE(box.toDelete());
+}
+
+TEST_CASE("NegativeScoreBox removes score on-hit") {
+    Player player;
+    player.gainScore();
+
+    NegativeScoreBox box(5, 5);
+    box.onCollision(player, true);
+
+    REQUIRE(player.getScore().get() == 0);
+    REQUIRE(box.toDelete());
+}
+
+TEST_CASE("LifeBox restores life on-hit") {
+    Player player;
+    REQUIRE(player.getLives().get() == player.getStartingLives());
+
+    player.loseLife();      
+    REQUIRE(player.getLives().get() == player.getStartingLives() - 1);
+
+    LifeBox box(5, 5);
+    box.onCollision(player, true);
+
+    REQUIRE(player.getLives().get() == player.getStartingLives());
 }
 
 TEST_CASE("World spawns boxes automatically through update()") {
-    World w;
+    World world;
 
-    for (int i = 0; i < 25; i++)
-        w.update();
+    int frames = world.getFramesBetweenSpawns();
 
-    REQUIRE(w.getBoxes().size() >= 1);
+    for (int i = 0; i <= frames; i++) { world.update(); }
+
+    REQUIRE(world.getBoxes().size() == 1);
 }
 
-TEST_CASE("World deletes boxes marked for deletion") {
-    World w;
+TEST_CASE("Box move and get flaged for delete") {
+    ScoreBox box(5, 5);
+
+    REQUIRE(!box.isFalling());
+    box.fall();
+    REQUIRE(box.isFalling());
+
+    int oldX = box.getHitboxX();
+    box.move(5);
+    REQUIRE(box.getHitboxX() == oldX + 5);
+
+    box.setToDelete();
+    REQUIRE(box.toDelete());
+}
+
+TEST_CASE("World deletes boxes flaged for deletion") {
+    World world;
 
     for (int i = 0; i < 25; i++)
-        w.update();
+        world.update();
 
-    REQUIRE(w.getBoxes().size() >= 1);
+    REQUIRE(world.getBoxes().size() >= 1);
 
-    w.getBoxes()[0]->setToDelete();
-    w.update();
+    world.getBoxes()[0]->setToDelete();
+    world.update();
 
-    REQUIRE(w.getBoxes().empty());
+    REQUIRE(world.getBoxes().empty());
 }
-TEST_CASE("World detects game over when player loses all lives") {
-    World w;
+TEST_CASE("World detects game over when player lost") {
+    World world;
 
-    REQUIRE(w.isGameOver() == false);
-    Player& p = w.getPlayer();
+    REQUIRE(world.isGameOver() == false);
+    Player& player = world.getPlayer();
 
-    p.loseLife();  // 3
-    p.loseLife();  // 2
-    p.loseLife();  // 1
-    p.loseLife();  // 0
+    while (player.getLives().get() > 0) { player.loseLife(); }
 
-    REQUIRE(p.isDead() == true);
-    REQUIRE(w.isGameOver() == true);
+    REQUIRE(player.isDead() == true);
+    REQUIRE(world.isGameOver() == true);
 }

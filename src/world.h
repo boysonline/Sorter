@@ -70,4 +70,5 @@ public:
     std::vector<Valve> getConveyorValves() const;
     Player& getPlayer();
     const Player& getPlayer() const;
+    const int getFramesBetweenSpawns() const { return FRAMES_BETWEEN_SPAWNS; }
 };

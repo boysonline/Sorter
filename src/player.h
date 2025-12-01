@@ -23,6 +23,8 @@ public:
     void loseScore() { score.lose(); }
     void restoreLife() { lives.restore(); }
     void loseLife() { lives.lose(); }
+    const int getStartingLives() const { return lives.getStarting(); }
+    const int getStartingScore() const { return score.getStarting(); }
     KeyPress getInput() const;
     Score getScore() const { return score; };
     Lives getLives() const { return lives; };

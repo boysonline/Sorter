@@ -50,13 +50,14 @@ private:
 public:
     Score();
     int get() const { return score; }
+    const int getStarting() const { return STARTING_SCORE; }
     void gain();
     void lose();
 };
 
 class Lives : public GameObject, public ISpriteMaker {
 private:
-    static constexpr int STARTING_LIVES = 4;
+    static constexpr int STARTING_LIVES = 3;
     static constexpr int X = 65;
     static constexpr int Y = 3;
 
@@ -66,6 +67,7 @@ private:
 public:
     Lives();
     int get() const { return lives; }
+    const int getStarting() const { return STARTING_LIVES; }
     void lose();
     void restore();
 };
