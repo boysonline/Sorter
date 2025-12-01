@@ -8,6 +8,9 @@
             "args": [
                 "-std=c++20",
                 "-fdiagnostics-color=always",
+                "-static",
+                "-static-libgcc",
+                "-static-libstdc++",
                 "-g",
                 "${workspaceFolder}/src/*.cpp",
                 "-o",
@@ -18,8 +21,8 @@
             },
             "problemMatcher": ["$gcc"],
             "group": {
-                "kind": "build",
-            },
+                "kind": "build"
+            }
         },
         {
             "label": "Build UnitTests.exe",
